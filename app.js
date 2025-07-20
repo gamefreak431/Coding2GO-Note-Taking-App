@@ -12,15 +12,27 @@ function saveNote(event) {
     const title = document.getElementById('noteTitle').value.trim();
     const content = document.getElementById('noteContent').value.trim();
 
-    notes.unshift({
-        id: generateId(),
-        title: title,
-        content: content
-    })
+    if (editingNoteId) {
+        // Update existing note
+        const noteIndex = notes.findIndex(note => note.id === editingNoteId);
+        notes[noteIndex] = {
+            ...notes[noteIndex],
+            title: title,
+            content: content
+        };
+    }
+    else {
+        // Create new note
+        notes.unshift({
+            id: generateId(),
+            title: title,
+            content: content
+        })
+    }
 
+    closeNoteDialog();
     saveNotes();
     renderNotes();
-    closeNoteDialog();
 }
 
 function generateId() {
