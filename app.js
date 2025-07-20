@@ -76,7 +76,7 @@ function openNoteDialog(noteId = null) {
     const titleInput = document.getElementById('noteTitle');
     const contentInput = document.getElementById('noteContent');
 
-    if(noteId !== null) {
+    if(noteId) {
         // Editing an existing note
         const noteToEdit = notes.find(note => note.id === noteId);
         editingNoteId = noteId;
