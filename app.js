@@ -1,4 +1,5 @@
 let notes = [];
+let editingNoteId = null;
 
 function loadnotes() {
     const savedNotes = localStorage.getItem('quickNotes');
@@ -41,7 +42,7 @@ function renderNotes() {
 
     if(notes.length === 0) {
         notesContainer.innerHTML = `
-            <div class="enpty-state">
+            <div class="empty-state">
                 <h2>No Notes Yet</h2>
                 <p>Create your first note to get started!</p>
                 <button class="add-note-btn" onclick="openNoteDialog()">+ Add Your First Note</button>
@@ -70,10 +71,26 @@ function renderNotes() {
     `).join('');
 }
 
-function openNoteDialog() {
+function openNoteDialog(noteId = null) {
     const dialog = document.getElementById('noteDialog');
     const titleInput = document.getElementById('noteTitle');
     const contentInput = document.getElementById('noteContent');
+
+    if(noteId !== null) {
+        // Editing an existing note
+        const noteToEdit = notes.find(note => note.id === noteId);
+        editingNoteId = noteId;
+        document.getElementById('dialogTitle').textContent = 'Edit Note';
+        titleInput.value = noteToEdit.title;
+        contentInput.value = noteToEdit.content;
+    }
+    else {
+        // Creating a new note
+        editingNoteId = null;
+        document.getElementById('dialogTitle').textContent = 'Add New Note';
+        titleInput.value = '';
+        contentInput.value = '';
+    }
 
     dialog.showModal();
     titleInput.focus();
